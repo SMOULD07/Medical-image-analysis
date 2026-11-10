@@ -1,1 +1,11 @@
 # Medical-image-analysis
+
+Dans ce TP, nous avons étudié plusieurs méthodes de segmentation d'images médicales sur trois datasets : Brain MRI, MRI Heart et DRIVE. L'objectif était de comparer les méthodes classiques, comme le seuillage, Otsu, les contours actifs et le filtre de Frangi, avec une approche d'apprentissage profond basée sur U-Net.
+
+Sur les IRM cérébrales, nous avons cherché à segmenter le corps calleux. Le seuillage manuel et Otsu ont montré leurs limites, car plusieurs tissus peuvent présenter des intensités similaires. Les contours actifs ont donné de meilleurs résultats, notamment le Snake avec un Dice de 0,3887. Le filtre de Frangi s'est révélé peu adapté à cette structure anatomique. Les deux U-Net testés, en 128 × 128 et 256 × 256 pixels, ont obtenu un Dice nul sur l'image de test, malgré une diminution de la Loss pendant l'entraînement.
+
+Sur les IRM cardiaques, nous avons d'abord transformé les annotations sous forme de points en masques binaires à l'aide de splines. Les contours actifs ont ensuite donné les meilleurs résultats, particulièrement MorphGAC avec un Dice de 0,9357 sur l'image étudiée. Le seuillage et Frangi ont obtenu des scores plus faibles. Le U-Net, entraîné sur 101 images et évalué sur 35 images de test, n'a pas réussi à segmenter correctement le ventricule gauche, avec un Dice moyen nul.
+
+Sur le dataset DRIVE, nous avons étudié la segmentation des vaisseaux sanguins à partir du canal vert. Le filtre de Frangi s'est montré plus adapté à ces structures fines et allongées, avec un Dice moyen de 0,5908 sur 20 images. La reconstruction morphologique a légèrement amélioré cette moyenne à 0,5967, mais son effet variait selon les images. Les métriques complémentaires, comme la distance de Hausdorff, le clDice et Tversky, ont montré qu'une amélioration du Dice ne signifie pas forcément une meilleure conservation des contours ou des vaisseaux fins.
+
+Nous avons également entraîné trois versions du U-Net sur DRIVE, avec une phase de validation : une combinaison BCE et Dice Loss, une BCE pondérée et une Dice Loss seule. Le meilleur Dice de validation est passé de 0,1651 à 0,2420. Cependant, les visualisations ont montré que les modèles ne parvenaient toujours pas à reconnaître correctement les vaisseaux et avaient tendance à prédire principalement une seule classe.
